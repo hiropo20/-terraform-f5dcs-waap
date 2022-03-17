@@ -53,7 +53,7 @@ Provider を利用する際、に以下を記述します
 以下パラメータを指定します。
 
 ============= ==== ==================================================
-api_p12_file  -    APIの認証情報として用いる、P12のファイルのPath情報
+api_p12_file  `-`  APIの認証情報として用いる、P12のファイルのPath情報
 url           必須 F5 DCS の API Endopoint を示すURL
 ============= ==== ==================================================
 
@@ -104,7 +104,7 @@ F5 DCS が提供するため Terraform と Go言語 のパッケージが必要�
 情報は以下を参照してください。
 Provider は Terraform 実行時、自動的に取得しますのでこちらのページのBuildは不要です
 
-- `Git terraform-provider-volterra<https://github.com/volterraedge/terraform-provider-volterra>`__
+- `Git terraform-provider-volterra <https://github.com/volterraedge/terraform-provider-volterra>`__
 
 Terraformのインストール手順は以下を参照してください。
 
