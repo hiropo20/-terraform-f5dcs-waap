@@ -383,3 +383,31 @@ terraform destroy を実行し、設定を削除します
 
 Terraformを使って正しく、追加、削除が出来ることが確認できました
 
+Tips1. Terraform Provider の利用方法について
+====
+
+Terraform Providerはドキュメントに詳細が記載されています。ドキュメントから利用方法を確認します
+
+- `Terraform F5 DCS <https://registry.terraform.io/namespaces/volterraedge>`__ 
+
+   .. image:: ./media/terraform-volterra2.jpg
+       :width: 400
+
+また、F5 DCS は作成済みのオブジェクトがどのような構成情報となるかJSON形式で確認することが可能です。
+
+すでに作成済みのオブジェクトの情報を確認します。対象のオブジェクト一番右側 ``‥`` から、 ``Manage Configuration`` をクリックします
+
+   .. image:: ./media/dcs-setting-edit.jpg
+       :width: 400
+
+表示された画面上部の ``JSON`` をクリックし、設定情報をJSON形式で確認します
+
+   .. image:: ./media/dcs-setting-view-json.jpg
+       :width: 400
+
+Terraformで作成されたいオブジェクトをGUIから実際に作成し、作成されたオブジェクトのJSON情報を参考にTerraform Providerの情報を確認すると効率的に調査を進めることが可能です。
+
+また、同等の設定を持つオブジェクトのJSONを保存し、Terraform を通じて作成したObjectのJSONの値と比較することで同等の情報を持つか確認することができます。
+
+
+

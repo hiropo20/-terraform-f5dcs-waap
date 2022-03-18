@@ -1,11 +1,15 @@
 variable "api_p12_file" {}
 variable "api_url" {}
-variable "healthcheck_name" {}
 variable "myns" {}
 variable "op_name" {}
 variable "pool_port" {}
+variable "server_name1" {}
+variable "server_name2" {}
 variable "httplb_name" {}
 variable "mydomain" {}
+variable "cert" {}
+variable "private_key" {}
+
 
 terraform {
   required_providers {
@@ -23,25 +27,29 @@ provider "volterra" {
 
 //// Create Objects //////////////////////////////////////////
 // Manage Origin Pool
-resource "volterra_origin_pool" "this" {
+resource "volterra_origin_pool" "example" {
   name                   = var.op_name
   namespace              = var.myns
   endpoint_selection     = "LOCAL_PREFERRED"
   loadbalancer_algorithm = "LB_OVERRIDE"
   port                   = var.pool_port
   no_tls                 = true
-  origin_servers [
-    {
-      public_name = var.ser_name1
-    },
-    {
-      public_name = var.ser_name2
+  origin_servers {
+    public_name {
+      dns_name = var.server_name1
     }
-  ]
+  }
+  origin_servers {
+    public_name {
+      dns_name = var.server_name2
+    }
+  }
 }
 
+
+
 // Manage HTTP LoadBalancer
-resource "volterra_http_loadbalancer" "this" {
+resource "volterra_http_loadbalancer" "example" {
   name                            = var.httplb_name
   namespace                       = var.myns
   domains                         = var.mydomain
@@ -57,5 +65,23 @@ resource "volterra_http_loadbalancer" "this" {
       namespace = var.myns
     }
   }
-  depends_on = [volterra_origin_pool.this]
+  // For http load balancer. Please delete https block and eliminate comment out here.
+  //http {
+  //  dns_volterra_managed = false
+  //}
+  https {
+    tls_parameters {
+      tls_certificates {
+        certificate_url = var.cert
+        private_key {
+          clear_secret_info {
+            url = var.private_key
+            provider = ""
+          }
+          secret_encoding_type = "EncodingNone"
+        }
+      }
+    }
+  }
+  depends_on = [volterra_origin_pool.example]
 }
