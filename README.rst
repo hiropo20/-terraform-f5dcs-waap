@@ -383,7 +383,7 @@ terraform destroy を実行し、設定を削除します
 
 Terraformを使って正しく、追加、削除が出来ることが確認できました
 
-Tips1. Terraform Provider の利用方法について
+Tips1. Terraform Provider の利用・調査方法について
 ====
 
 Terraform Providerはドキュメントに詳細が記載されています。ドキュメントから利用方法を確認します
