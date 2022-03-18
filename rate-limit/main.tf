@@ -1,0 +1,96 @@
+variable "api_p12_file" {}
+variable "api_url" {}
+variable "myns" {}
+variable "op_name" {}
+variable "pool_port" {}
+variable "server_name1" {}
+variable "server_name2" {}
+variable "httplb_name" {}
+variable "mydomain" {}
+variable "cert" {}
+variable "private_key" {}
+
+
+terraform {
+  required_providers {
+    volterra = {
+      source  = "volterraedge/volterra"
+      version = "0.11.6"
+    }
+  }
+}
+
+provider "volterra" {
+  api_p12_file = var.api_p12_file
+  url          = var.api_url
+}
+
+//// Create Objects //////////////////////////////////////////
+// Manage Origin Pool
+resource "volterra_origin_pool" "example" {
+  name                   = var.op_name
+  namespace              = var.myns
+  endpoint_selection     = "LOCAL_PREFERRED"
+  loadbalancer_algorithm = "LB_OVERRIDE"
+  port                   = var.pool_port
+  no_tls                 = true
+  origin_servers {
+    public_name {
+      dns_name = var.server_name1
+    }
+  }
+  origin_servers {
+    public_name {
+      dns_name = var.server_name2
+    }
+  }
+}
+
+
+
+// Manage HTTP LoadBalancer
+resource "volterra_http_loadbalancer" "example" {
+  name                            = var.httplb_name
+  namespace                       = var.myns
+  domains                         = var.mydomain
+  advertise_on_public_default_vip = true
+  no_challenge                    = true
+  round_robin                     = true
+  // disable_rate_limit              = true
+  rate_limit {
+    rate_limiter  {
+      total_number     = 1
+      burst_multiplier = 1
+      unit             = "SECOND"
+    }
+    no_ip_allowed_list = true
+    no_policies        = true
+  }
+  service_policies_from_namespace = true
+  disable_waf                     = true
+  default_route_pools {
+    pool {
+      name      = var.op_name
+      namespace = var.myns
+    }
+  }
+  // For http load balancer. Please delete https block and eliminate comment out here.
+  //http {
+  //  dns_volterra_managed = false
+  //}
+  https {
+    tls_parameters {
+      tls_certificates {
+        certificate_url = var.cert
+        private_key {
+          clear_secret_info {
+            url = var.private_key
+            provider = ""
+          }
+          secret_encoding_type = "EncodingNone"
+        }
+      }
+    }
+  }
+  depends_on = [volterra_origin_pool.example]
+}
