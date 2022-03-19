@@ -11,6 +11,3 @@ mydomain         = ["host.namespace.domain"] // Domain name to be exposed
 
 cert             = "string///**base 64 encode SSL Certificate**"  // SSL Certificate for HTTPS access
 private_key      = "string///**base 64 encode SSL Private Key**"  // SSL Private Key for HTTPS access
-
-// WAF Parameter
-waf_name         = "app_firewall"            // Name of App Firewall
