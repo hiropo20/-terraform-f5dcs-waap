@@ -13,4 +13,4 @@ cert             = "string///**base 64 encode SSL Certificate**"  // SSL Certifi
 private_key      = "string///**base 64 encode SSL Private Key**"  // SSL Private Key for HTTPS access
 
 // Service Policy Parameter
-sp_name          = "demo-app-service-policy-t"
+sp_name          = "service_policy"
