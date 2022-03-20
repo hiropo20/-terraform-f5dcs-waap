@@ -112,10 +112,9 @@ resource "volterra_http_loadbalancer" "example" {
     default_js_challenge_parameters      = true
     default_captcha_challenge_parameters = true
     default_mitigation_settings          = true
-    // no_challenge                         = true
+    no_challenge                         = true
     // always_enable_js_challenge           = true  // Please choose for JS Challenge
-    always_enable_captcha_challenge      = true  // Please choose for Captcha Challenge
-
+    // always_enable_captcha_challenge      = true  // Please choose for Captcha Challenge
   }
   round_robin                     = true
   disable_rate_limit              = true
